@@ -1,7 +1,56 @@
+import { faker } from '@faker-js/faker';
+import { useState, useEffect } from 'react'
+import {Pagination} from './index'
 
-const CategoryList = ({products}) => {
+const CategoryList = () => {
+    
+    faker.seed(100)
+    const [products, setProducts] = useState([])
+    const [currentPageProducts, setCurrentPageProducts] = useState([])
+    const [toogleUnique] = useState(false)
+    const [currentPage, setCurrentPage] = useState(1);
+    const [recordsPerPage] = useState(6);
+
+    useEffect(() => {
+        generateFakeData(100)
+    },[])
+
+    //fetching products..
+    const generateFakeData = (count) => {
+        const localProducts = []
+        const productNames = new Set();
+
+        if (!toogleUnique) {
+            for (let i = 0; i < count; i++){ 
+                localProducts.push({
+                    id: faker.number.bigInt(),
+                    productName: faker.commerce.product()
+                })
+            }
+        } else {
+            while(localProducts.length < count){
+                const productName = faker.commerce.product()
+                if (!productNames.has(productName)) {
+                    productNames.add(productName)
+                    localProducts.push({
+                        id: faker.number.bigInt(),
+                        productName: productName
+                    })
+                }
+            } 
+        }
+        setProducts([...localProducts])
+    }
+    
+    //pagination logic ...
+    const indexOfLastRecord = currentPage * recordsPerPage;
+    const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
+    const currentRecords = products.slice(indexOfFirstRecord, indexOfLastRecord);
+    const numberOfPages = Math.ceil(products.length / recordsPerPage)
+    
+    
     return (
-        <section className='w-full mt-4 flex justify-center items-center'>
+        <section className='w-full mt-4 mb-4 flex justify-center items-center'>
             <div className='w-[90%] sm:w-2/5 h-[100%] 
                 border-[#C1C1C1] border rounded-md flex flex-col justify-center items-center'
             >
@@ -21,7 +70,7 @@ const CategoryList = ({products}) => {
                     </p>
 
                     {
-                        products.map((product) => (
+                        currentRecords.map((product) => (
                             <div className="flex flex-1 justify-start items-center 
                                 w-full mt-3 mb-2"
                                 key={product.productId}
@@ -37,13 +86,13 @@ const CategoryList = ({products}) => {
                             </div>
                         ))
                     }
-                    
-
                 </div>
-            
+                <Pagination
+                    numberOfPages={numberOfPages}
+                    currentPage={currentPage}
+                    setCurrentPage={setCurrentPage}
+                />
             </div>
-            
-            
         </section>
     );
 }
