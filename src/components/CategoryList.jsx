@@ -5,15 +5,29 @@ import {Pagination} from './index'
 const CategoryList = () => {
     
     faker.seed(100)
+    const [toogleUnique] = useState(false)
     const [products, setProducts] = useState([])
     const [currentPageProducts, setCurrentPageProducts] = useState([])
-    const [toogleUnique] = useState(false)
     const [currentPage, setCurrentPage] = useState(1);
     const [recordsPerPage] = useState(6);
+    const [pageRange] = useState(7);
+    const [pageNumberButtons, setPageNumberButtons] = useState([])
+    const [currentPageRange, setCurrentPageRange] = useState([])
+    
 
     useEffect(() => {
         generateFakeData(100)
     },[])
+
+    useEffect(() => {
+        setCurrentPageProducts([...currentRecords])
+        computeInitialPagination()
+    }, [products])
+    
+    useEffect(() => {
+        setCurrentPageProducts([...currentRecords])
+    }, [currentPage])
+
 
     //fetching products..
     const generateFakeData = (count) => {
@@ -42,12 +56,50 @@ const CategoryList = () => {
         setProducts([...localProducts])
     }
     
-    //pagination logic ...
+    //computing pagination variables ...
     const indexOfLastRecord = currentPage * recordsPerPage;
     const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
     const currentRecords = products.slice(indexOfFirstRecord, indexOfLastRecord);
     const numberOfPages = Math.ceil(products.length / recordsPerPage)
     
+    //fn: compute pagination onpageLoad
+    const computeInitialPagination = () => {
+        const pageNumbers = [...Array(numberOfPages + 1).keys()].slice(1)
+        setPageNumberButtons([...pageNumbers]) //Sets all page buttons ranging from 1..n
+        let currentRangeStart = currentPage - 1
+        setCurrentPageRange(() => pageNumbers.slice(currentRangeStart,pageRange))  //extracts first'n' group of buttons - 7 in this case. 
+    }
+
+    //fn: loadPrevPage
+    const loadPrevPage = (currentPage) => {
+        if (currentPage == 1) {
+            alert("You are on the first page")
+        } else {
+            setCurrentPage((currentPage) => currentPage-1)
+        }
+    }
+
+    //fn: loadNextPage
+    const loadNextPage = (currentPage) => {
+        if (currentPage == 7) {
+            alert("You are on last page")
+        } else {
+            setCurrentPage((currentPage) => currentPage+1)
+        }
+    }
+    
+
+    //fn: loadNextSetOfPageButtons - loads next set of 'n' page buttons
+    const loadNextSetOfPageButtons = (curentPage) => {
+        console.log("This is clicked", curentPage)
+        if (currentPage >= 1 || currentPage <= 7) {
+           console.log(true) 
+        } else {
+            console.log(false)
+        }
+    }
+
+
     
     return (
         <section className='w-full mt-4 mb-4 flex justify-center items-center'>
@@ -70,10 +122,10 @@ const CategoryList = () => {
                     </p>
 
                     {
-                        currentRecords.map((product) => (
+                        currentPageProducts.map((product) => (
                             <div className="flex flex-1 justify-start items-center 
                                 w-full mt-3 mb-2"
-                                key={product.productId}
+                                key={product.id}
                             >
                                 <input type="checkbox" id="1"
                                     className=" checked:accent-black 
@@ -91,6 +143,11 @@ const CategoryList = () => {
                     numberOfPages={numberOfPages}
                     currentPage={currentPage}
                     setCurrentPage={setCurrentPage}
+                    currentPageRange={currentPageRange}
+                    loadPrevPage={loadPrevPage}
+                    loadNextPage={loadNextPage}
+                    loadNextSetOfPageButtons={loadNextSetOfPageButtons}
+                    
                 />
             </div>
         </section>
