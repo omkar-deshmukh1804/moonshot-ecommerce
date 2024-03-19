@@ -1,6 +1,4 @@
-import { useEffect, useState } from 'react';
 import { TfiAngleLeft, TfiAngleRight, TfiAngleDoubleLeft, TfiAngleDoubleRight } from 'react-icons/tfi'
-
 
 const Pagination = ({
     numberOfPages,

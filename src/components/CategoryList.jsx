@@ -134,19 +134,19 @@ const CategoryList = () => {
 
     
     return (
-        <section className='w-full mt-4 mb-4 flex justify-center items-center'>
-            <div className='w-[90%] sm:w-2/5 h-[100%] 
+        <section className='w-full mt-2 flex justify-center items-center'>
+            <div className='w-[90%] sm:w-2/5 min-h-full 
                 border-[#C1C1C1] border rounded-md flex flex-col justify-center items-center'
             >
                 <h3 className='text-center 
-                    sm:text-2xl text-xl font-bold mt-6 leading-normal'
+                    sm:text-2xl text-xl font-bold mt-2 leading-normal'
                 >
                     Please mark your interests!
                 </h3>
-                <p className="text-center text-sm mt-4 font-normal">We will keep you notified.</p>
+                <p className="text-center text-sm mt-2 font-normal">We will keep you notified.</p>
 
                 <div className='w-full px-10 flex flex-1 
-                flex-col justify-center items-start mt-5 mb-4'
+                flex-col justify-center items-start mt-4 mb-2'
                 >
                     <p className='text-lg 
                         font-semibold leading-normal'
