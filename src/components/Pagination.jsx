@@ -9,33 +9,17 @@ const Pagination = ({
     currentPageRange,
     loadPrevPage,
     loadNextPage,
-    loadNextSetOfPageButtons
+    loadNextSetOfPageButtons,
+    loadPrevSetOfPageButtons
     
     }) => {
 
-
-    // const handlePartialRenderNext = () => {
-    //     let startIndexOfNextRange = currentPageRange.length
-    //     let endIndexOfNextRange = startIndexOfNextRange + pageRange
-    //     setCurrentPageRange(() => pageNumbers.slice(startIndexOfNextRange,endIndexOfNextRange))
-    //     setCurrentPage(currentPageRange.length+1)
-    // }
-
-    // const handlePartialRenderPrev = () => {
-    //     let endIndexOfPrevRange = (currentPageRange[0]) - 1
-    //     let startIndexOfPrevRange = (endIndexOfPrevRange - pageRange)
-    //     setCurrentPageRange(() => pageNumbers.slice(startIndexOfPrevRange,endIndexOfPrevRange))
-    //     setCurrentPage(startIndexOfPrevRange+1)
-        
-    // }
-
-    
     return (
         <div className="w-full px-5
             flex justify-start items-center flex-wrap gap-5 mb-5"
         >
             <TfiAngleDoubleLeft
-                
+                onClick={() => loadPrevSetOfPageButtons()}
             />
             <TfiAngleLeft
                 onClick={() => loadPrevPage(currentPage)}
@@ -58,7 +42,7 @@ const Pagination = ({
                 onClick={() => loadNextPage(currentPage)}
             />
             <TfiAngleDoubleRight
-                onClick={() => loadNextSetOfPageButtons(currentPage)}
+                onClick={() => loadNextSetOfPageButtons()}
             />
 
         </div>

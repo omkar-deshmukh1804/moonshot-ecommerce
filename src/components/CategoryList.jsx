@@ -72,33 +72,65 @@ const CategoryList = () => {
 
     //fn: loadPrevPage
     const loadPrevPage = (currentPage) => {
-        if (currentPage == 1) {
+        if (currentPage == (pageNumberButtons[0])) {
             alert("You are on the first page")
-        } else {
+        }else if (currentPage == currentPageRange[0])
+        {
+            loadPrevSetOfPageButtons(currentPage-1)
+        }else {
             setCurrentPage((currentPage) => currentPage-1)
         }
     }
 
     //fn: loadNextPage
     const loadNextPage = (currentPage) => {
-        if (currentPage == 7) {
-            alert("You are on last page")
-        } else {
+        if (currentPage == (pageNumberButtons.slice(-1)[0])) {
+            alert("You are on the last page")
+        } else if(currentPage == (currentPageRange.slice(-1)[0])){
+            loadNextSetOfPageButtons()
+        }
+        else {
             setCurrentPage((currentPage) => currentPage+1)
         }
     }
     
 
     //fn: loadNextSetOfPageButtons - loads next set of 'n' page buttons
-    const loadNextSetOfPageButtons = (curentPage) => {
-        console.log("This is clicked", curentPage)
-        if (currentPage >= 1 || currentPage <= 7) {
-           console.log(true) 
+    const loadNextSetOfPageButtons = () => {
+        let startIndex = currentPageRange.slice(-1)[0]
+        let endIndex = startIndex + pageRange
+        let updatedPageButtons = pageNumberButtons.slice(startIndex, endIndex)
+        
+        if (startIndex>=(pageNumberButtons.slice(-1)[0])) {
+           alert("Error!")
         } else {
-            console.log(false)
+            setCurrentPageRange([...updatedPageButtons])
+            setCurrentPage(() => updatedPageButtons[0])
+            
         }
+
     }
 
+    //fn: loadPrevSetOfPageButtons
+    const loadPrevSetOfPageButtons = (currentPage) => {
+        console.log()
+        let endIndex = currentPageRange[0]-1
+        let startIndex = endIndex - pageRange
+        let updatedPageButtons = pageNumberButtons.slice(startIndex, endIndex)
+        
+        if (startIndex < 0 )
+        {
+           alert("Error!")
+        } else {
+            setCurrentPageRange([...updatedPageButtons])
+            if (currentPage) {
+                setCurrentPage(() => updatedPageButtons.slice(-1)[0])
+            } else {
+                setCurrentPage(() => updatedPageButtons[0])
+            }
+            
+        }
+    }
 
     
     return (
@@ -147,6 +179,7 @@ const CategoryList = () => {
                     loadPrevPage={loadPrevPage}
                     loadNextPage={loadNextPage}
                     loadNextSetOfPageButtons={loadNextSetOfPageButtons}
+                    loadPrevSetOfPageButtons={loadPrevSetOfPageButtons}
                     
                 />
             </div>
